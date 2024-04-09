@@ -16,13 +16,11 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUBTOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and tag image
+      - name: Download Image
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/mongo:latest .
+          docker pull ${{ github.repository_owner }}/mongo:latest
 
-      - name: Push image to GHCR
-        run: |
-          docker push ghcr.io/${{ github.repository_owner }}/mongo:latest
-      
+      - name: Run the Container
+        run: docker run ${{ github.repository_owner }}/mongo:latest 
