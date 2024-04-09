@@ -25,3 +25,10 @@ jobs:
       - name: Push image to GHCR
         run: |
           docker push ghcr.io/${{ github.repository_owner }}/mongo:latest
+      
+      - name: Download Image
+        run: |
+          docker pull ${{ github.repository_owner }}/mongo:latest # Replace with your details
+
+      - name: Run the Container
+        run: docker run ${{ github.repository_owner }}/mongo:latest  # Replace with your details
