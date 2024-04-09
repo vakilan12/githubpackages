@@ -4,11 +4,6 @@ idCounters = [
       prefix: "M-",
       seq: 0,
     },
-    {
-      object: "bom",
-      prefix: "BOM-",
-      seq: 0,
-    },
   ];
   
   ReplaceMany(db.idCounter, idCounters);
