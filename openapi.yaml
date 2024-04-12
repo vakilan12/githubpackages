@@ -1,0 +1,826 @@
+openapi: 3.0.3
+info:
+  title: Model
+  version: "1.0.0"
+  contact:
+    url: http://hontrel.com
+  description: Find out more about model
+servers:
+  - url: http://localhost
+    description: "local server"
+paths: {}
+components:
+  parameters:
+    page_no:
+      in: query
+      name: page_no
+      required: false
+      description: Page number to display the data
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+    page_size:
+      in: query
+      name: page_size
+      required: false
+      description: no of documents in single page
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+    year:
+      in: query
+      name: year
+      description: The year to fetch the data
+      schema:
+        type: integer
+        pattern: ^(20|21)\d{2}$
+    object_type:
+      in: query
+      name: object_type
+      required: false
+      description: Type of the associated object
+      schema:
+        type: string
+    object_ids:
+      in: query
+      name: object_ids
+      required: false
+      style: form
+      explode: false
+      description: Unique identifiers of the associated object
+      schema:
+        type: array
+        items:
+          type: string
+          description: A 24 character hexadecimal unique identifier of object
+          pattern: ^[a-f\d]{24}$
+          example: 507f1f77bcf86cd799439011
+          x-go-type: primitive.ObjectID
+          x-go-type-import:
+            path: "go.mongodb.org/mongo-driver/bson/primitive"
+    object_id:
+      in: query
+      name: object_id
+      required: false
+      description: Unique identifier of the associated object
+      schema:
+        type: string
+        description: A 24 character hexadecimal unique identifier of object
+        pattern: ^[a-f\d]{24}$
+        example: 507f1f77bcf86cd799439011
+        x-go-type: primitive.ObjectID
+        x-go-type-import:
+          path: "go.mongodb.org/mongo-driver/bson/primitive"
+    object_sequence_id:
+      in: query
+      name: object_sequence_id
+      required: false
+      description: Sequence id of the associated object
+      schema:
+        type: string
+    include_histories:
+      in: query
+      required: false
+      name: include_histories
+      description: Includes all version of the objects
+      schema:
+        type: boolean
+        default: false
+    tag_group_id:
+      in: query
+      name: tag_group_id
+      required: false
+      description: Unique identifier of the TagGroup object
+      schema:
+        type: string
+        description: A 24 character hexadecimal unique identifier of TagGroup object
+        pattern: ^[a-f\d]{24}$
+        example: 507f1f77bcf86cd799439011
+        x-go-type: primitive.ObjectID
+        x-go-type-import:
+          path: "go.mongodb.org/mongo-driver/bson/primitive"
+    tag_id:
+      in: query
+      name: tag_id
+      required: false
+      description: Unique identifier of the Tag object
+      schema:
+        type: string
+        description: A 24 character hexadecimal unique identifier of Tag object
+        pattern: ^[a-f\d]{24}$
+        example: 507f1f77bcf86cd799439011
+        x-go-type: primitive.ObjectID
+        x-go-type-import:
+          path: "go.mongodb.org/mongo-driver/bson/primitive"
+    family_id:
+      in: query
+      name: family_id
+      required: false
+      description: Unique identifier of the associated object
+      schema:
+        type: string
+        description: A 24 character hexadecimal unique identifier of object
+        pattern: ^[a-f\d]{24}$
+        example: 507f1f77bcf86cd799439011
+        x-go-type: primitive.ObjectID
+        x-go-type-import:
+          path: "go.mongodb.org/mongo-driver/bson/primitive"
+    group_id:
+      in: query
+      name: group_id
+      required: false
+      description: Unique identifier of the associated object
+      schema:
+        type: string
+        description: A 24 character hexadecimal unique identifier of object
+        pattern: ^[a-f\d]{24}$
+        example: 507f1f77bcf86cd799439011
+        x-go-type: primitive.ObjectID
+        x-go-type-import:
+          path: "go.mongodb.org/mongo-driver/bson/primitive"
+    product_noun_id:
+      in: query
+      name: product_noun_id
+      required: false
+      description: Unique identifier of the associated object
+      schema:
+        type: string
+        description: A 24 character hexadecimal unique identifier of object
+        pattern: ^[a-f\d]{24}$
+        example: 507f1f77bcf86cd799439011
+        x-go-type: primitive.ObjectID
+        x-go-type-import:
+          path: "go.mongodb.org/mongo-driver/bson/primitive"
+    vendor_id:
+      in: query
+      name: vendor_id
+      required: false
+      description: Unique identifier of vendor
+      schema:
+        type: string
+        description: A 24 character hexadecimal unique identifier of object
+        pattern: ^[a-f\d]{24}$
+        example: 507f1f77bcf86cd799439011
+        x-go-type: primitive.ObjectID
+        x-go-type-import:
+          path: "go.mongodb.org/mongo-driver/bson/primitive"
+    unit_region_id:
+      in: query
+      name: unit_region_id
+      required: false
+      description: Unique identifier of unit region
+      schema:
+        type: string
+        description: A 24 character hexadecimal unique identifier of object
+        pattern: ^[a-f\d]{24}$
+        example: 507f1f77bcf86cd799439011
+        x-go-type: primitive.ObjectID
+        x-go-type-import:
+          path: "go.mongodb.org/mongo-driver/bson/primitive"
+    sourcing_type:
+      in: query
+      name: sourcing_type
+      required: false
+      schema:
+        type: string
+        enum:
+          - internal_purchase
+          - internal_manufactured
+          - external_purchase
+    sequence_id:
+      name: sequence_id
+      in: query
+      required: false
+      description: Sequence id of the current object
+      schema:
+        type: string
+    update_version:
+      name: update_version
+      in: query
+      required: false
+      description: increment the current version during the update
+      schema:
+        type: boolean
+  responses:
+    ObjectAck:
+      description: Response body to acknowledge the action(Create/Update/Delete) over the object.
+      content:
+        application/json:
+          schema:
+            type: object
+            allOf:
+              - $ref: "#/components/schemas/ObjectIdentifier"
+              - properties:
+                  _id:
+                    title: id
+                    type: string
+                    description: A 24 character hexadecimal unique string.
+                    pattern: ^[a-f\d]{24}$
+                    example: 507f1f77bcf86cd799439011
+                    x-go-type: primitive.ObjectID
+                    x-go-type-import:
+                      path: "go.mongodb.org/mongo-driver/bson/primitive"
+                    x-oapi-codegen-extra-tags:
+                      bson: _id,omitempty
+                      json: _id,omitempty
+                  message:
+                    type: string
+                    example: "Object Created"
+                  url:
+                    type: string
+                    description: URL of the document to upload or download. Only applicable for document APIs
+                required:
+                  - _id
+                  - message
+
+    Error:
+      description: json encoded domain error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                description: the HTTP status code applicable to this problem, expressed as a integer value
+                type: integer
+              title:
+                description: error message to be reported when deleting a noun
+              details:
+                type: object
+                description: details include a non-standard meta-information varies for each request.
+                x-go-type: interface{}
+                x-oapi-codegen-extra-tags:
+                  bson: details,omitempty
+                  json: details,omitempty
+              code:
+                title: string
+                description: "an application-specific error code, expressed as a string value."
+              internal_error:
+                description: "optional error for debuging purporses"
+                type: string
+            required:
+              - title
+              - status
+
+        text/plain:
+          schema:
+            title: Validation Error
+            description: Error will be returned if the given request does not satisfy the openapi spec.
+            type: string
+            x-go-type: "[]byte"
+  schemas:
+    AttachmentDocumentType:
+      title: Attachment Document Type
+      type: string
+      description: Attachment document type defines the attachment type based on it's purpose.
+      enum:
+        - display_pic
+        - document
+      x-oapi-codegen-extra-tags:
+        form: document_type
+        bson: document_type,omitempty
+        json: document_type,omitempty
+
+    AttachmentRel:
+      title: Attachment Relation
+      readOnly: true
+      nullable: true
+      properties:
+        document_type:
+          $ref: "#/components/schemas/AttachmentDocumentType"
+        attachment_url:
+          type: string
+          description: Optional S3 Bucket attachment url to download the attachment
+          x-oapi-codegen-extra-tags:
+            json: attachment_url,omitempty
+            bson: attachment_url,omitempty
+        file_name:
+          $ref: "#/components/schemas/FileName"
+        file_id:
+          type: string
+          description: A 24 charector hexadecimal unique string.
+          pattern: ^[a-f\d]{24}$
+          example: 507f1f77bcf86cd799439011
+          x-go-type: primitive.ObjectID
+          x-go-type-import:
+            path: "go.mongodb.org/mongo-driver/bson/primitive"
+          x-oapi-codegen-extra-tags:
+            bson: file_id,omitempty
+            json: file_id,omitempty
+      required:
+        - file_name
+        - document_type
+    ChartResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          x-oapi-codegen-extra-tags:
+            json: name,omitempty
+            bson: name,omitempty
+        data:
+          type: array
+          x-go-type: "interface{}"
+          x-oapi-codegen-extra-tags:
+            bson: data,omitempty
+            json: data,omitempty
+      required:
+        - name
+        - data
+    ChartData:
+      type: object
+      properties:
+        label:
+          type: string
+          description: The label of the chart data
+          x-oapi-codegen-extra-tags:
+            json: label,omitempty
+            bson: label,omitempty
+        value:
+          type: integer
+          description: The value of the chart data
+          x-oapi-codegen-extra-tags:
+            json: value,omitempty
+            bson: value,omitempty
+      required: [label, value]
+    User:
+      properties:
+        _id:
+          title: id
+          type: string
+          description: A 24 character hexadecimal unique User Identifier.
+          pattern: ^[a-f\d]{24}$
+          example: 507f1f77bcf86cd799439011
+          x-go-type: primitive.ObjectID
+          x-go-type-import:
+            path: "go.mongodb.org/mongo-driver/bson/primitive"
+          x-oapi-codegen-extra-tags:
+            bson: _id,omitempty
+            json: _id,omitempty
+        username:
+          title: UserName
+          description: Name of the user
+          type: string
+          x-oapi-codegen-extra-tags:
+            json: username,omitempty
+            bson: username,omitempty
+        module_access:
+          title: Module Access
+          type: array
+          items:
+            type: string
+          x-oapi-codegen-extra-tags:
+            json: module_access,omitempty
+            bson: module_access,omitempty
+        is_admin:
+          title: IsAdmin
+          type: boolean
+          x-oapi-codegen-extra-tags:
+            json: is_admin,omitempty
+            bson: is_admin,omitempty
+        email_id:
+          type: string
+          x-oapi-codegen-extra-tags:
+            bson: email_id,omitempty
+            json: email_id,omitempty
+      required:
+        - _id
+        - username
+        - module_access
+        - is_admin
+        - email_id
+
+    DocumentMetaData:
+      description: Contains document meta data like created and modified user and time
+      properties:
+        created_user_id:
+          title: user_id
+          type: string
+          description: unique id of the user who created the object
+          x-oapi-codegen-extra-tags:
+            bson: created_user_id,omitempty
+            json: created_user_id,omitempty
+        modified_user_id:
+          title: user_id
+          type: string
+          description: unique id of the user who modified the object
+          x-oapi-codegen-extra-tags:
+            bson: modified_user_id,omitempty
+            json: modified_user_id,omitempty
+        created_user:
+          type: string
+          description: name of the user who created the object
+          x-oapi-codegen-extra-tags:
+            json: created_user,omitempty
+            bson: created_user,omitempty
+        created_time:
+          type: string
+          format: date-time
+          x-oapi-codegen-extra-tags:
+            json: created_time,omitempty
+            bson: created_time,omitempty
+        modified_user:
+          type: string
+          description: name of the object who modified the object
+          x-oapi-codegen-extra-tags:
+            json: modified_user,omitempty
+            bson: modified_user,omitempty
+        modified_time:
+          type: string
+          format: date-time
+          x-oapi-codegen-extra-tags:
+            json: modified_time,omitempty
+            bson: modified_time,omitempty
+
+    ObjectIdentifier:
+      description: ObjectIdentifier contains fields need for object versioning
+      properties:
+        version:
+          readOnly: true
+          type: integer
+          x-oapi-codegen-extra-tags:
+            json: version,omitempty
+            bson: version,omitempty
+        sequence_id:
+          description: Sequence ID of the object
+          readOnly: true
+          type: string
+          x-oapi-codegen-extra-tags:
+            json: sequence_id,omitempty
+            bson: sequence_id,omitempty
+
+    Link:
+      type: object
+      properties:
+        object_type:
+          type: string
+          title: Object Type
+          description: Type of the object. It should be a non-empty non-blank string.
+          x-oapi-codegen-extra-tags:
+            bson: object_type,omitempty
+            json: object_type,omitempty
+        object_ids:
+          type: array
+          items:
+            type: string
+            pattern: ^[a-f\d]{24}$
+            x-go-type: primitive.ObjectID
+            x-go-type-import:
+              path: "go.mongodb.org/mongo-driver/bson/primitive"
+          x-oapi-codegen-extra-tags:
+            json: object_ids,omitempty
+            bson: object_ids,omitempty
+      required:
+        - object_type
+        - object_ids
+
+    Association:
+      type: object
+      properties:
+        object_type:
+          type: string
+          title: Object Type
+          description: Type of the object. It should be a non-empty non-blank string.
+          x-oapi-codegen-extra-tags:
+            bson: object_type,omitempty
+            json: object_type,omitempty
+        object_details:
+          type: array
+          items:
+            $ref: "#/components/schemas/ObjectDetail"
+          x-oapi-codegen-extra-tags:
+            bson: object_details,omitempty
+            json: object_details,omitempty
+      required:
+        - object_type
+        - object_details
+      x-oapi-codegen-extra-tags:
+        bson: association,omitempty
+        json: association,omitempty
+
+    ObjectDetail:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/ObjectIdentifier"
+        - properties:
+            _id:
+              type: string
+              description: A unique identifier of the object
+              pattern: ^[a-f\d]{24}$
+              example: 507f1f77bcf86cd799439011
+              x-go-type: primitive.ObjectID
+              x-go-type-import:
+                path: "go.mongodb.org/mongo-driver/bson/primitive"
+              x-oapi-codegen-extra-tags:
+                bson: _id,omitempty
+                json: _id,omitempty
+          required:
+            - _id
+
+    FileName:
+      title: File Name
+      type: string
+      description: >
+        FileName represents a valid filename with the following constraints:
+          - The filename must start with an alphanumeric character.
+          - It may contain additional alphanumeric characters, spaces, periods, underscores and hyphens before the file extension.
+          - The filename must have a file extension.
+          - Other special characters are not allowed.
+        refer: https://regexpattern.com/valid-filename
+      example: |
+        "example.pdf"
+        "document 123.rar"
+        "video-file.mp4"
+      # ^ - The caret symbol (^) at the beginning denotes the start of the string.
+      # [a-zA-Z0-9] - This character class matches a single alphanumeric character (letter or digit).
+      # It allows both lowercase and uppercase letters and digits from 0 to 9.
+      # This ensures that the filename starts with an alphanumeric character.
+      # (?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])? - This is a non-capturing group (denoted by (?: )).
+      # The question mark (?) after the group makes it optional. This group allows for zero or more occurrences of alphanumeric characters, spaces, periods (.), underscores (_), or hyphens (-) before an alphanumeric character. The purpose of this group is to allow additional characters before the dot (.) in the filename.
+      # \. - The backslash before the dot (.) is an escape character that treats the dot as a literal dot and not as a special character.
+      # [a-zA-Z0-9_-]+ - This character class matches one or more alphanumeric characters, underscores (_), or hyphens (-) after the dot (.) in the filename
+      # suitable for file extension. and the $ symbol denotes the end of the string.
+      pattern: ^[a-zA-Z0-9](?:[a-zA-Z0-9 ._-]*[a-zA-Z0-9])?\.[a-zA-Z0-9_-]+$
+      x-oapi-codegen-extra-tags:
+        bson: file_name,omitempty
+        json: file_name,omitempty
+    TagsInfo:
+      type: array
+      items:
+        type: object
+        properties:
+          tag_group_id:
+            type: string
+            description: A 24 character hexadecimal unique string of a tagGroup Identifier
+            pattern: ^[a-f\d]{24}$
+            example: 507f1f77bcf86cd799439011
+            x-go-type: primitive.ObjectID
+            x-go-type-import:
+              path: "go.mongodb.org/mongo-driver/bson/primitive"
+            x-oapi-codegen-extra-tags:
+              bson: tag_group_id,omitempty
+              json: tag_group_id,omitempty
+          tag_group_name:
+            readOnly: true
+            type: string
+            x-oapi-codegen-extra-tags:
+              bson: tag_group_name,omitempty
+              json: tag_group_name,omitempty
+          tag_id:
+            type: string
+            description: A 24 character hexadecimal unique string of a tag Identifier
+            pattern: ^[a-f\d]{24}$
+            example: 507f1f77bcf86cd799439011
+            x-go-type: primitive.ObjectID
+            x-go-type-import:
+              path: "go.mongodb.org/mongo-driver/bson/primitive"
+            x-oapi-codegen-extra-tags:
+              bson: tag_id,omitempty
+              json: tag_id,omitempty
+          tag_name:
+            readOnly: true
+            type: string
+            x-oapi-codegen-extra-tags:
+              bson: tag_name,omitempty
+              json: tag_name,omitempty
+          tag_group_color:
+            type: string
+            pattern: "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+            description: a hexadecimal color code or a name of the color.
+            example: "#ff0000"
+            x-oapi-codegen-extra-tags:
+              bson: tag_group_color,omitempty
+              json: tag_group_color,omitempty
+        required:
+          - tag_group_id
+          - tag_id
+      x-oapi-codegen-extra-tags:
+        bson: tags_info,omitempty
+        json: tags_info,omitempty
+
+    GetLinkedObjectTagsParams:
+      type: object
+      properties:
+        object_type:
+          type: string
+          x-oapi-codegen-extra-tags:
+            json: object_type,omitempty
+            bson: object_type,omitempty
+        object_ids:
+          type: array
+          items:
+            type: string
+            description: A 24 character hexadecimal unique identifier of object
+            pattern: ^[a-f\d]{24}$
+            example: 507f1f77bcf86cd799439011
+            x-go-type: primitive.ObjectID
+            x-go-type-import:
+              path: "go.mongodb.org/mongo-driver/bson/primitive"
+          x-oapi-codegen-extra-tags:
+            json: object_ids,omitempty
+            bson: object_ids,omitempty
+        include_histories:
+          type: boolean
+          default: false
+          x-oapi-codegen-extra-tags:
+            json: include_histories,omitempty
+            bson: include_histories,omitempty
+        tag_group_id:
+          type: string
+          description: A 24 character hexadecimal unique identifier of TagGroup object
+          pattern: ^[a-f\d]{24}$
+          example: 507f1f77bcf86cd799439011
+          x-go-type: primitive.ObjectID
+          x-go-type-import:
+            path: "go.mongodb.org/mongo-driver/bson/primitive"
+          x-oapi-codegen-extra-tags:
+            json: tag_group_id,omitempty
+            bson: tag_group_id,omitempty
+
+    GetAllParams:
+      type: object
+      properties:
+        object_type:
+          type: string
+          x-oapi-codegen-extra-tags:
+            json: object_type,omitempty
+            bson: object_type,omitempty
+        object_id:
+          type: string
+          description: A 24 character hexadecimal unique identifier of object
+          pattern: ^[a-f\d]{24}$
+          example: 507f1f77bcf86cd799439011
+          x-go-type: primitive.ObjectID
+          x-go-type-import:
+            path: "go.mongodb.org/mongo-driver/bson/primitive"
+          x-oapi-codegen-extra-tags:
+            json: object_id,omitempty
+            bson: object_id,omitempty
+        object_sequence_id:
+          description: sequence id of the object associated with the document
+          type: string
+          x-oapi-codegen-extra-tags:
+            json: object_sequence_id,omitempty
+            bson: object_sequence_id,omitempty
+        include_histories:
+          type: boolean
+          default: false
+          x-oapi-codegen-extra-tags:
+            json: include_histories,omitempty
+            bson: include_histories,omitempty
+        tag_group_id:
+          type: string
+          description: A 24 character hexadecimal unique identifier of TagGroup object
+          pattern: ^[a-f\d]{24}$
+          example: 507f1f77bcf86cd799439011
+          x-go-type: primitive.ObjectID
+          x-go-type-import:
+            path: "go.mongodb.org/mongo-driver/bson/primitive"
+          x-oapi-codegen-extra-tags:
+            json: tag_group_id,omitempty
+            bson: tag_group_id,omitempty
+        tag_id:
+          type: string
+          description: A 24 character hexadecimal unique identifier of Tag object
+          pattern: ^[a-f\d]{24}$
+          example: 507f1f77bcf86cd799439011
+          x-go-type: primitive.ObjectID
+          x-go-type-import:
+            path: "go.mongodb.org/mongo-driver/bson/primitive"
+          x-oapi-codegen-extra-tags:
+            json: tag_id,omitempty
+            bson: tag_id,omitempty
+        group_id:
+          type: string
+          description: A 24 character hexadecimal unique identifier of group object
+          pattern: ^[a-f\d]{24}$
+          example: 507f1f77bcf86cd799439011
+          x-go-type: primitive.ObjectID
+          x-go-type-import:
+            path: "go.mongodb.org/mongo-driver/bson/primitive"
+          x-oapi-codegen-extra-tags:
+            json: group_id,omitempty
+            bson: group_id,omitempty
+        family_id:
+          type: string
+          description: A 24 character hexadecimal unique identifier of family object
+          pattern: ^[a-f\d]{24}$
+          example: 507f1f77bcf86cd799439011
+          x-go-type: primitive.ObjectID
+          x-go-type-import:
+            path: "go.mongodb.org/mongo-driver/bson/primitive"
+          x-oapi-codegen-extra-tags:
+            json: family_id,omitempty
+            bson: family_id,omitempty
+        product_noun_id:
+          type: string
+          description: A 24 character hexadecimal unique identifier of Product Noun object
+          pattern: ^[a-f\d]{24}$
+          example: 507f1f77bcf86cd799439011
+          x-go-type: primitive.ObjectID
+          x-go-type-import:
+            path: "go.mongodb.org/mongo-driver/bson/primitive"
+          x-oapi-codegen-extra-tags:
+            json: product_noun_id,omitempty
+            bson: product_noun_id,omitempty
+        sequence_id:
+          type: string
+          x-oapi-codegen-extra-tags:
+            json: sequence_id,omitempty
+            bson: sequence_id,omitempty
+        update_version:
+          description: increment the current version
+          type: boolean
+          x-oapi-codegen-extra-tags:
+            json: update_version,omitempty
+            bson: update_version,omitempty
+
+    LinkedObjectTag:
+      allOf:
+        - $ref: "#/components/schemas/ObjectIdentifier"
+        - properties:
+            object_id:
+              pattern: ^[a-f\d]{24}$
+              example: 507f1f77bcf86cd799439011
+              description: A 24 character hexadecimal unique material Identifier.
+              x-go-type: primitive.ObjectID
+              x-go-type-import:
+                path: "go.mongodb.org/mongo-driver/bson/primitive"
+              x-oapi-codegen-extra-tags:
+                bson: _id,omitempty
+                json: _id,omitempty
+            description:
+              type: string
+              x-oapi-codegen-extra-tags:
+                bson: description,omitempty
+                json: description,omitempty
+            tag_group_id:
+              type: string
+              description: A 24 character hexadecimal unique string of a tagGroup Identifier
+              pattern: ^[a-f\d]{24}$
+              example: 507f1f77bcf86cd799439011
+              x-go-type: primitive.ObjectID
+              x-go-type-import:
+                path: "go.mongodb.org/mongo-driver/bson/primitive"
+              x-oapi-codegen-extra-tags:
+                bson: tag_group_id,omitempty
+                json: tag_group_id,omitempty
+            tag_group_name:
+              type: string
+              x-oapi-codegen-extra-tags:
+                bson: tag_group_name,omitempty
+                json: tag_group_name,omitempty
+            tag_names:
+              type: array
+              items:
+                type: object
+                properties:
+                  tag_name:
+                    type: string
+                    description: name of the tagGroup
+                    x-oapi-codegen-extra-tags:
+                      bson: tag_name,omitempty
+                      json: tag_name,omitempty
+                  tag_id:
+                    pattern: ^[a-f\d]{24}$
+                    example: 507f1f77bcf86cd799439011
+                    description: A 24 character hexadecimal unique material Identifier.
+                    x-go-type: primitive.ObjectID
+                    x-go-type-import:
+                      path: "go.mongodb.org/mongo-driver/bson/primitive"
+                    x-oapi-codegen-extra-tags:
+                      bson: tag_id,omitempty
+                      json: tag_id,omitempty
+                required:
+                  - "tag_name"
+                  - "tag_id"
+          required:
+            - object_id
+            - tag_group_id
+            - tag_group_name
+            - tag_names
+            - sequence_id
+            - version
+            - ObjectIdentifier
+
+    Id:
+      title: Id
+      type: string
+      description: A 24 character hexadecimal unique string.
+      pattern: ^[a-f\d]{24}$
+      example: 507f1f77bcf86cd799439011
+      x-go-type: primitive.ObjectID
+      x-go-type-import:
+        path: "go.mongodb.org/mongo-driver/bson/primitive"
+      x-oapi-codegen-extra-tags:
+        bson: _id,omitempty
+        json: _id,omitempty
+
+    SerialNumber:
+      type: string
+      description: serial number of the object
+      x-oapi-codegen-extra-tags:
+        bson: serial_num,omitempty
+        json: serial_num,omitempty

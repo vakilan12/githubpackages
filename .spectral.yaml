@@ -1,0 +1,36 @@
+description: Recommended rules for a high quality specification.
+documentationUrl: https://quobix.com/vacuum/rulesets/recommended
+extends: spectral:oas
+rules:
+  oas3-valid-schema-example: off
+  no-$ref-siblings: off
+  oas3-unused-component: off
+  x-oapi-codegen-extra-tag-exist:
+    description: "x-oapi-codegen-extra-tags should have bson and json tags to marshal and unmarshal the object"
+    severity: error
+    message: "x-oapi-codegen-extra-tags does not match the schema defined in the specification"
+    given: "$.components.schemas.*.properties.*"
+    then:
+      # check x-oapi-codegen-tag matches the schema
+      - field: x-oapi-codegen-extra-tags
+        function: schema
+        functionOptions:
+          schema:
+            type: object
+            properties:
+              json:
+                type: string
+                pattern: (.|\s)*\S(.|\s)*
+              bson:
+                type: string
+                pattern: (.|\s)*\S(.|\s)*
+            required: [json, bson]
+  snake_case:
+    description: "Parameter names (path and query) must be snake case"
+    given: "$.paths.*.*.parameters[*?(@.in=='path' || @.in=='query')].name"
+    severity: error
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z]+(_[a-z0-9]+)*$"
+      message: "Parameter name (path or query) must be snake_case (lowercase letters and underscores)."
